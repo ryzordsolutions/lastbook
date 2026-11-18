@@ -4,7 +4,7 @@
   python3 tools/validate_topics.py [--data /path/to/LastbookData] [content/topics/water.json ...]
 
 The library is looked for in --data, then LASTBOOK_DATA, then this source tree, the same data folder the app takes: the
-folder that holds library-data/. With no topic files named, every file in content/topics/ is checked.
+folder that holds library-data/. With no topic files named, every file in content/topics/ and content/regions/ is checked.
 
 Encyclopedia (ZIM) paths are looked up in the ZIM files themselves, under library-data/collections/, with libzim. Nothing
 is asked of a server and no port is used. A ZIM file that is not in this library counts as an error, because the guide
@@ -36,6 +36,8 @@ def items(t):
         yield from (('route:' + str(s.get('title')), i) for i in s.get('read', []))
     for l in t.get('limits', []):
         if l.get('doc') or l.get('zim'): yield ('limits', l)
+    for slot, part in (t.get('slots') or {}).items():   # a region file (content/regions/): its readings are guide readings too
+        yield from (('slot:' + slot, i) for i in part.get('read', []))
 
 
 ARCHIVES = {}
@@ -64,7 +66,7 @@ def main(args):
     lib, files = library(args)
     cat = {r['id']: r for r in json.loads((lib / 'catalog.json').read_text(encoding='utf-8'))}
     errors = 0
-    for f in files or sorted((HERE / 'content/topics').glob('*.json')):
+    for f in files or sorted((HERE / 'content/topics').glob('*.json')) + sorted((HERE / 'content/regions').glob('*.json')):
         t = json.loads(f.read_text(encoding='utf-8')); n = 0
         for where, i in items(t):
             n += 1

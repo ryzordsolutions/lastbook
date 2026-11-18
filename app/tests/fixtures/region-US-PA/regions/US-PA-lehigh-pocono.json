@@ -1,0 +1,56 @@
+{
+ "id": "US-PA-lehigh-pocono",
+ "name": "Lehigh Valley and the Poconos",
+ "level": "local",
+ "areas": "Lehigh, Northampton, Monroe, Carbon, Pike and Wayne counties",
+ "counties": [
+  "42077",
+  "42095",
+  "42089",
+  "42025",
+  "42103",
+  "42127"
+ ],
+ "revision": "2026-11-18-test",
+ "slots": {
+  "growing-season": {
+   "read": [
+    {
+     "doc": "region-us-pa-planting-guide",
+     "label": "When to sow each vegetable (test stand-in)",
+     "note": "Stands in for Penn State's seed planting chart, set for a 1 May last frost. It was made for York County, which is warmer."
+    }
+   ],
+   "missing": [
+    "No planting chart written for Lehigh, Northampton or Monroe County."
+   ]
+  }
+ },
+ "sources": [
+  {
+   "doc": "region-us-pa-planting-guide",
+   "publisher": "Penn State Extension",
+   "terms": "permission",
+   "terms_status": "asked",
+   "terms_note": "Test stand-in until Penn State answers on reuse."
+  }
+ ],
+ "places": [
+  "Allentown",
+  "Bethlehem",
+  "Easton",
+  "Emmaus",
+  "Nazareth",
+  "Stroudsburg",
+  "East Stroudsburg",
+  "Mount Pocono",
+  "Tobyhanna",
+  "Jim Thorpe",
+  "Lehighton",
+  "Palmerton",
+  "Honesdale",
+  "Lehigh Valley",
+  "Poconos",
+  "Pocono Mountains"
+ ]
+}

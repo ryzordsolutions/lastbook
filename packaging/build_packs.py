@@ -163,8 +163,8 @@ def guide_ids():
         elif isinstance(o, list):
             for x in o:
                 walk(x)
-    for f in sorted((PROJECT / 'content' / 'topics').glob('*.json')):
-        walk(SHIP.clean(json.loads(f.read_text(encoding='utf-8'))))
+    for f in sorted((PROJECT / 'content' / 'topics').glob('*.json')) + sorted((PROJECT / 'content' / 'regions').glob('*.json')):
+        walk(SHIP.clean(json.loads(f.read_text(encoding='utf-8'))))   # a region file's readings are guide readings too
     return ids
 
 

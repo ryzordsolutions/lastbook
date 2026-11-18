@@ -1,0 +1,61 @@
+{
+ "id": "US-CA-socal-coast",
+ "name": "Coastal Southern California",
+ "level": "local",
+ "areas": "Los Angeles, coastal Ventura and Orange counties",
+ "revision": "2026-11-18",
+ "documents": [
+  "coastal-growing-0e2825ce7a278c7c5e86",
+  "coastal-growing-2bf5bc7fde86306a742c",
+  "coastal-growing-61ed997967489e5abeb1",
+  "coastal-growing-6c1e6263ed3907b61d56",
+  "coastal-growing-740c0243d587fcafebe3",
+  "coastal-growing-7e742f7e7ec7d1b6ee65",
+  "coastal-growing-7faf0e1254afe98b605e",
+  "coastal-growing-84be1f504ea1d4902487"
+ ],
+ "slots": {
+  "growing-season": {
+   "read": [
+    {
+     "doc": "coastal-growing-6c1e6263ed3907b61d56",
+     "page": 1,
+     "label": "Month-by-month vegetable planting chart for Southern California",
+     "note": "UC Ventura County one-page colour chart for coastal Southern California. It is an image only: open the PDF and read the colours, the text is not searchable."
+    },
+    {
+     "doc": "coastal-growing-2bf5bc7fde86306a742c",
+     "page": 1,
+     "label": "October planting list for Los Angeles County (historical)",
+     "note": "Older UC column (about 2000) listing cool-season crops to sow or transplant in October. Use for planting ideas only, not its chemical or preserving advice."
+    },
+    {
+     "doc": "coastal-growing-7e742f7e7ec7d1b6ee65",
+     "label": "Potato planting months by California region",
+     "note": "UC IPM table gives approximate South Coast potato planting windows and says to check locally with a Master Gardener program."
+    }
+   ],
+   "missing": []
+  }
+ },
+ "sources": [
+  {
+   "publisher": "University of California Agriculture and Natural Resources",
+   "terms": "in the library",
+   "terms_status": "settled",
+   "terms_note": "Already in the library's packs; their terms are on each pack's Sources and permissions page."
+  }
+ ],
+ "places": [
+  "Los Angeles",
+  "Ventura",
+  "Oxnard",
+  "Santa Monica",
+  "Long Beach",
+  "Orange County",
+  "Santa Ana",
+  "Irvine",
+  "Anaheim",
+  "Huntington Beach"
+ ]
+}

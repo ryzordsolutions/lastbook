@@ -61,27 +61,16 @@
   },
   {
    "id": "when-to-plant",
-   "label": "What can I plant now in coastal Southern California?",
-   "hint": "Los Angeles, coastal Ventura and Orange counties",
+   "label": "What can I plant now where I live?",
+   "hint": "Planting times and frost for your area",
    "read": [
     {
-     "doc": "coastal-growing-6c1e6263ed3907b61d56",
-     "page": 1,
-     "label": "Month-by-month vegetable planting chart for Southern California",
-     "note": "UC Ventura County one-page colour chart for coastal Southern California. It is an image only: open the PDF and read the colours, the text is not searchable."
-    },
-    {
-     "doc": "coastal-growing-2bf5bc7fde86306a742c",
-     "page": 1,
-     "label": "October planting list for Los Angeles County (historical)",
-     "note": "Older UC column (about 2000) listing cool-season crops to sow or transplant in October. Use for planting ideas only, not its chemical or preserving advice."
-    },
-    {
-     "doc": "coastal-growing-7e742f7e7ec7d1b6ee65",
-     "label": "Potato planting months by California region",
-     "note": "UC IPM table gives approximate South Coast potato planting windows and says to check locally with a Master Gardener program."
+     "doc": "med-2ca695c9db63d020",
+     "label": "Growing food in any place: the general chapter",
+     "note": "Hesperian’s whole 2012 chapter on growing food, written for communities anywhere. It gives no planting dates for a particular place."
     }
-   ]
+   ],
+   "slot": "growing-season"
   },
   {
    "id": "soil-unknown",
@@ -326,22 +315,16 @@
    ]
   },
   {
-   "title": "Step 2: Learn local timing for coastal Southern California",
+   "title": "Step 2: Learn the planting times where you live",
    "goal": "Know which crops go in during the cool season and which wait for warm weather where you live.",
    "read": [
     {
-     "doc": "coastal-growing-6c1e6263ed3907b61d56",
-     "page": 1,
-     "label": "Southern California vegetable planting schedule",
-     "note": "UC Ventura County colour chart by month; image-only, so view the page rather than search it."
-    },
-    {
-     "doc": "coastal-growing-2bf5bc7fde86306a742c",
-     "page": 1,
-     "label": "An October list for Los Angeles County (historical)",
-     "note": "Older UC column of cool-season crops to sow or transplant; check against the current chart."
+     "doc": "med-2ca695c9db63d020",
+     "label": "Growing food in any place: the general chapter",
+     "note": "Hesperian’s whole 2012 chapter on growing food, written for communities anywhere. It gives no planting dates for a particular place."
     }
-   ]
+   ],
+   "slot": "growing-season"
   },
   {
    "title": "Step 3: Check and build your soil, and make compost",

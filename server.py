@@ -9,6 +9,7 @@ It builds on engine/library.py for every original file, the full-text index, ZIM
 requests, and adds a few read-only endpoints:
 
   /api/topics                 curated needs and learning routes, with source details resolved from catalog.json
+  /api/region                 the region this library is set to, and the regions it knows (engine/regions.py)
   /api/find?q=&kind=          plain-language search (synonyms, grouping by document, trusted-source ranking)
   /api/doc/<id>               one catalog record (+ linked video/transcript)
   /api/page/<id>/<n>          text of one page;  /api/page/<id>/<n>.png  rendered page image (cached)
@@ -34,6 +35,7 @@ if __name__ == '__main__':  # --data must be known before the paths below are wo
 import engine.paths as lastbook_paths  # noqa: E402  (data folder and program folder can differ in the packaged app)
 from engine.paths import ro_uri  # noqa: E402
 from engine import saved_pages, address_search  # noqa: E402
+from engine import regions as regions_mod  # noqa: E402
 from engine.setup import api as setup_api  # noqa: E402  (the one module that may download: only when the person asks)
 HERE = lastbook_paths.DATA  # holds derived/
 APP = lastbook_paths.APP  # holds web/ and content/
@@ -225,8 +227,59 @@ def resolve_item(i):
     return i
 
 
+# ----------------------------------------------------------------- regions ----
+def region_defs():
+    """Region files: the app's own (content/regions/), then any a region pack installed (library-data/regions/)."""
+    return regions_mod.load_definitions(APP / 'content' / 'regions', LIB / 'regions')
+
+
+def region_info():
+    defs = region_defs()
+    code = regions_mod.chosen(HERE)
+    return {'region': code, 'name': regions_mod.name(code, defs) if code else None, 'chain': regions_mod.chain(code) if code else [],
+            'pack': (regions_mod.read_set(HERE).get('pack') or {}).get('region'),
+            'known': sorted(({'code': c, 'name': regions_mod.name(c, defs)} for c in defs), key=lambda x: x['code'])}
+
+
+def fill_slot(step, defs, code, zims):
+    """A guide choice or step that names a slot gets the readings for the reader's region, most local level first, each
+    labelled with its place, ahead of the general readings it lists itself. With no region chosen, or none of its levels
+    in this library, the general readings stay and a note says so. Readings written for other places are kept apart in
+    `elsewhere`, never offered as the reader's own."""
+    slot = step.get('slot')
+    if not slot:
+        return step
+    mine = regions_mod.chain(code) if code else []
+    seen, here, missing = set(), [], []
+    for c in mine:
+        part = ((defs.get(c) or {}).get('slots') or {}).get(slot) or {}
+        got = [dict(resolve_item(i), place=regions_mod.name(c, defs)) for i in part.get('read', []) if item_here(i, zims)]
+        for g in got:
+            if (g.get('doc'), g.get('page')) not in seen:
+                seen.add((g.get('doc'), g.get('page')))
+                here.append(g)
+        missing += part.get('missing', [])
+    elsewhere = []
+    for c, d in sorted(defs.items()):
+        if c in mine:
+            continue
+        for i in ((d.get('slots') or {}).get(slot) or {}).get('read', []):
+            if item_here(i, zims) and (i.get('doc'), i.get('page')) not in seen:
+                seen.add((i.get('doc'), i.get('page')))
+                elsewhere.append(dict(resolve_item(i), place=regions_mod.name(c, defs)))
+    name = regions_mod.name(code, defs) if code else None
+    if not code:
+        note = 'Readings for a particular place show here once you choose where this library is used.'
+    elif not here:
+        note = f'Nothing written for {name} in this library yet. These readings are general.'
+    else:
+        note = ' '.join(missing)
+    return dict(step, read=here + step['read'], place=name, regionNote=note, elsewhere=elsewhere)
+
+
 def topics_resolved():
     res = []
+    defs, code = region_defs(), regions_mod.chosen(HERE)
     try:
         gaps = json.loads((APP / 'content' / 'gaps.json').read_text(encoding='utf-8'))
     except (OSError, ValueError):
@@ -237,7 +290,7 @@ def topics_resolved():
         return [resolve_item(i) for i in items if item_here(i, zims)]
 
     def still_useful(step):  # one that had things to open and has none left
-        return step.get('goto') or step['read'] or not step['had']
+        return step.get('goto') or step['read'] or not step['had'] or step.get('slot')
 
     for t in topics():
         t = dict(t)
@@ -247,7 +300,7 @@ def topics_resolved():
         # A warning stands without its source. It only loses the citation that would open nothing.
         t['limits'] = [resolve_item(i) if item_here(i, zims) else {'text': i.get('text')} for i in t.get('limits', [])]
         for k in ('choices', 'route'):
-            steps = [dict(c, read=here(c.get('read', [])), had=bool(c.get('read'))) for c in t.get(k, [])]
+            steps = [fill_slot(dict(c, read=here(c.get('read', [])), had=bool(c.get('read'))), defs, code, zims) for c in t.get(k, [])]
             t[k] = [{a: b for a, b in c.items() if a != 'had'} for c in steps if still_useful(c)]
         res.append(t)
     return res
@@ -1992,6 +2045,8 @@ class Handler(library.Handler):
                 return self.send_static(WEB / 'sw.js')
             if path == '/api/topics':
                 return self.send_json(topics_resolved())
+            if path == '/api/region':
+                return self.send_json(region_info())
             if path == '/api/find':
                 return self.send_json(find(qs.get('q', '')[:200], qs.get('kind', 'all')))
             if path.startswith('/api/doc/'):

@@ -151,8 +151,17 @@ function rcard(item) {
   else if (s && s.kind === 'pdf') pv = `<span class="pv"><img loading="lazy" alt="" src="${pageImg(s.id, item.page, 360)}" onerror="this.remove()"><span class="pg">${item.page ? 'p. ' + item.page : 'PDF'}</span></span>`;
   else pv = `<span class="pv w">${ico('page')}</span>`;
   const label = item.label || item.title || (s && s.title);
+  const place = item.place ? `<span class="place">${ico('pin')}${esc(item.place)}</span>` : '';
   const src = item.zim ? `<strong>Encyclopedia</strong> · ${esc(item.title || '')} · community-written` : `${s ? 'From “' + esc(s.title) + '” · ' : ''}${srcText(s, item.page)}<br>${esc(s ? s.trust : '')}`;
-  return `<a class="rcard" href="${hrefFor(item)}">${pv}<span><b>${esc(label)}</b>${item.note ? `<p>${esc(item.note)}</p>` : ''}<span class="src">${src}</span></span></a>`;
+  return `<a class="rcard" href="${hrefFor(item)}">${pv}<span>${place}<b>${esc(label)}</b>${item.note ? `<p>${esc(item.note)}</p>` : ''}<span class="src">${src}</span></span></a>`;
+}
+// Under a guide choice or step that has regional readings (server.py fill_slot): what is missing for the reader's region,
+// then readings written for other places, closed, so they are there to read but never offered as the reader's own.
+function slotMore(c) {
+  if (!c.slot) return '';
+  const note = c.regionNote ? `<p class="slot-note">${ico('pin')}<span>${esc(c.regionNote)}</span></p>` : '';
+  const other = (c.elsewhere || []).length ? `<details class="elsewhere"><summary>Written for other places <span class="n">· ${c.elsewhere.length}</span></summary><div class="rcards">${c.elsewhere.map(rcard).join('')}</div></details>` : '';
+  return note + other;
 }
 function rowItem(item) {
   const s = item.src || null;
@@ -476,14 +485,14 @@ async function topicPage(id, open) {
     ? `<div class="sit"><a href="#/t/${esc(c.goto)}"><span class="dot"></span><span class="tx"><b>${esc(c.label)}</b>${c.hint ? `<span>${esc(c.hint)}</span>` : ''}</span><span class="chev">${ico('right')}</span></a></div>`
     : `<div class="sit${open === c.id ? ' open' : ''}" id="c-${esc(c.id)}">
       <button aria-expanded="${open === c.id}" aria-controls="cb-${esc(c.id)}" data-choice="${esc(c.id)}"><span class="dot"></span><span class="tx"><b>${esc(c.label)}</b>${c.hint ? `<span>${esc(c.hint)}</span>` : ''}</span><span class="chev">${ico('down')}</span></button>
-      <div class="body" id="cb-${esc(c.id)}"><div class="rcards">${(c.read || []).map(rcard).join('') || '<p class="muted">Nothing picked for this yet — try searching.</p>'}</div></div></div>`).join('');
+      <div class="body" id="cb-${esc(c.id)}"><div class="rcards">${(c.read || []).map(rcard).join('') || '<p class="muted">Nothing picked for this yet — try searching.</p>'}</div>${slotMore(c)}</div></div>`).join('');
   const limLi = l => `<li>${esc(l.text)}${l.src ? ` <span class="cite">— <a href="${hrefFor(l)}">${esc(l.src.publisher || l.src.title)}${l.page ? ', p. ' + l.page : ''}</a></span>` : l.zim ? ` <span class="cite">— <a href="${hrefFor(l)}">encyclopedia</a></span>` : ''}</li>`;
   const LIM = 4, lims = t.limits || [];
   const limits = lims.length ? `<section class="limits" aria-labelledby="lim"><h2 id="lim">${ico('warn')}Stop and get help when…</h2><ul>${lims.slice(0, LIM).map(limLi).join('')}</ul>${lims.length > LIM ? `<details><summary>Show all ${lims.length} warnings</summary><ul>${lims.slice(LIM).map(limLi).join('')}</ul></details>` : ''}</section>` : '';
   const disagree = (t.gaps?.disagree || []).length ? `<div class="disagree"><b>Sources disagree</b><ul>${t.gaps.disagree.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>` : '';
   const route = (t.route || []).length ? `<h2>Your learning route</h2><p class="muted small">Ticks are your own notes on this device. Reading or watching is not the same as practising safely.</p>
     <ol class="route">${t.route.map((s, i) => { const k = id + ':' + i, p = progress[k] || {}; return `<li class="step${p.practised ? ' done' : ''}"><h3>${esc(s.title.replace(/^Step \d+:\s*/i, ''))}</h3>${s.goal ? `<p class="goal">${esc(s.goal)}</p>` : ''}
-      <div class="rcards">${(s.read || []).map(rcard).join('')}</div>
+      <div class="rcards">${(s.read || []).map(rcard).join('')}</div>${slotMore(s)}
       <div class="mark"><label><input type="checkbox" data-prog="${k}" data-f="read" ${p.read ? 'checked' : ''}> I’ve read this</label><label><input type="checkbox" data-prog="${k}" data-f="practised" ${p.practised ? 'checked' : ''}> I’ve practised it with someone who knows</label></div></li>` }).join('')}</ol>` : '';
   const sec = (icon, title, items) => items && items.length ? `<details class="more"><summary>${ico(icon)}<span>${title} <span class="n">· ${items.length}</span></span></summary><div class="body"><ul class="list">${items.map(i => rowItem({ ...i, preview: true })).join('')}</ul></div></details>` : '';
   const vids = topicVideos(t);

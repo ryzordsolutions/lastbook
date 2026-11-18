@@ -1,0 +1,5 @@
+TEST STAND-IN, NOT A REAL SOURCE.
+This file stands in for Penn State Extension's Vegetable Seed Planting Guide (Master Gardeners of York County) in the
+regional coverage prototype, until Penn State answers on reuse. The real chart lists, for each vegetable, whether it is a
+cool or warm season crop and its earliest and last sowing dates, set for a 1 May last frost and a 1 October first frost.
+Words for search: planting dates, last frost, first frost, sow, transplant, tomatoes, peas, lettuce, Pennsylvania.

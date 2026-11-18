@@ -1,0 +1,27 @@
+{
+ "id": "US-PA",
+ "name": "Pennsylvania",
+ "level": "state",
+ "revision": "2026-11-18-test",
+ "slots": {
+  "growing-season": {
+   "read": [
+    {
+     "doc": "region-us-pa-cool-warm",
+     "label": "Which vegetables go in before the last frost (test stand-in)",
+     "note": "Stands in for Penn State's page on cool-season and warm-season crops."
+    }
+   ],
+   "missing": []
+  }
+ },
+ "sources": [
+  {
+   "doc": "region-us-pa-cool-warm",
+   "publisher": "Penn State Extension",
+   "terms": "permission",
+   "terms_status": "asked",
+   "terms_note": "Test stand-in until Penn State answers on reuse."
+  }
+ ]
+}

@@ -1,0 +1,26 @@
+[
+ {
+  "id": "region-us-pa-planting-guide",
+  "kind": "html",
+  "title": "Vegetable seed planting guide (test stand-in)",
+  "publisher": "Test fixture, standing in for Penn State Extension",
+  "collection": "Regional: Pennsylvania",
+  "category": "regional",
+  "path": "documents/regions/us-pa/planting-guide-stand-in.html",
+  "region": "US-PA-lehigh-pocono",
+  "license": "test fixture",
+  "text_path": "text/region-us-pa-planting-guide.txt"
+ },
+ {
+  "id": "region-us-pa-cool-warm",
+  "kind": "html",
+  "title": "Cool-season and warm-season vegetables (test stand-in)",
+  "publisher": "Test fixture, standing in for Penn State Extension",
+  "collection": "Regional: Pennsylvania",
+  "category": "regional",
+  "path": "documents/regions/us-pa/cool-warm-season-stand-in.html",
+  "region": "US-PA",
+  "license": "test fixture",
+  "text_path": "text/region-us-pa-cool-warm.txt"
+ }
+]

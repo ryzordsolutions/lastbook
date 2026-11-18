@@ -1,0 +1,7 @@
+{
+ "region": "US-PA",
+ "title": "Pennsylvania (test pack)",
+ "revision": "2026-11-18-test",
+ "default_region": "US-PA",
+ "note": "A test pack for the regional coverage prototype. Its documents are stand-ins written for testing, not Penn State Extension's text, which waits on reuse permission (docs/REGIONAL-COVERAGE.md, Reuse terms)."
+}

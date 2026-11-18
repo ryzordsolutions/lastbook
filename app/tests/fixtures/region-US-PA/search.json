@@ -1,0 +1,20 @@
+[
+ {
+  "doc_id": "region-us-pa-planting-guide",
+  "title": "Vegetable seed planting guide (test stand-in)",
+  "collection": "Regional: Pennsylvania",
+  "category": "regional",
+  "path": "documents/regions/us-pa/planting-guide-stand-in.html",
+  "page": null,
+  "body": "TEST STAND-IN, NOT A REAL SOURCE.\nThis file stands in for Penn State Extension's Vegetable Seed Planting Guide (Master Gardeners of York County) in the\nregional coverage prototype, until Penn State answers on reuse. The real chart lists, for each vegetable, whether it is a\ncool or warm season crop and its earliest and last sowing dates, set for a 1 May last frost and a 1 October first frost.\nWords for search: planting dates, last frost, first frost, sow, transplant, tomatoes, peas, lettuce, Pennsylvania.\n"
+ },
+ {
+  "doc_id": "region-us-pa-cool-warm",
+  "title": "Cool-season and warm-season vegetables (test stand-in)",
+  "collection": "Regional: Pennsylvania",
+  "category": "regional",
+  "path": "documents/regions/us-pa/cool-warm-season-stand-in.html",
+  "page": null,
+  "body": "TEST STAND-IN, NOT A REAL SOURCE.\nThis file stands in for Penn State Extension's page Cool-season vs. Warm-season Vegetables in the regional coverage\nprototype. The real page explains which crops go in weeks before the last frost and which wait for warm soil.\nWords for search: cool season, warm season, frost, plant tomatoes, peas, Pennsylvania.\n"
+ }
+]

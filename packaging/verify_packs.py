@@ -156,8 +156,8 @@ def guides(snap, packs):
         elif isinstance(o, list):
             for x in o:
                 walk(x)
-    for f in sorted((PROJECT / 'content/topics').glob('*.json')):
-        walk(ship.clean(json.loads(f.read_text(encoding='utf-8'))))
+    for f in sorted((PROJECT / 'content/topics').glob('*.json')) + sorted((PROJECT / 'content/regions').glob('*.json')):
+        walk(ship.clean(json.loads(f.read_text(encoding='utf-8'))))   # a region file's readings are guide readings too
     snapshot = {ship.new_id(r['id']): r for r in json.loads((Path(snap) / 'catalog.json').read_text(encoding='utf-8'))}
     gone = set(SPEC['known_gap_documents'])
     bad = 0
