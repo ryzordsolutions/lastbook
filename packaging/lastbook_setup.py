@@ -4,7 +4,7 @@
                                 for this user only, with no administrator prompt.
   Uninstall Lastbook.exe        the same program without app.zip. It sits in the install folder and Apps & features runs it.
 
-Switches: /S quiet; /uninstall; /uninstall /S. Exit codes: 0 done, 1 failed, 2 Lastbook is open, 3 cancelled.
+Switches: /S quiet; /uninstall; /uninstall /S; /update (from Lastbook's Restart and update: see update()). Exit codes: 0 done, 1 failed, 2 Lastbook is open, 3 cancelled.
 
 Everything goes inside this user's profile: the program in %LOCALAPPDATA%\\Programs\\Lastbook, a Start menu shortcut, an optional
 desktop shortcut, and one registry key under HKCU for Apps & features. Nothing reaches the network. Uninstalling removes exactly what
@@ -16,6 +16,7 @@ import os
 import subprocess
 import sys
 import threading
+import time
 import traceback
 import winreg
 import zipfile
@@ -250,6 +251,38 @@ def uninstall():
                 continue
 
 
+def wait_closed(seconds=60):
+    """True once Lastbook.exe is no longer running, False if it still is after seconds."""
+    end = time.monotonic() + seconds
+    while lastbook_running():
+        if time.monotonic() > end:
+            return False
+        time.sleep(0.25)
+    return True
+
+
+def update():
+    """/update: Lastbook started this after checking it (engine/update_windows.py), then closed itself. Waits for it to close,
+    installs over it quietly, keeping the desktop shortcut if there was one, and opens Lastbook again. A message only on trouble."""
+    if not wait_closed():
+        message('Lastbook did not close, so the update was not installed. Close Lastbook, then open it and try again.', 0x30)
+        return APP_OPEN
+    _, links = read_manifest(install_dir())
+    desktop = str(desktop_link()).lower() in {str(l).lower() for l in links}
+    try:
+        d = install(desktop)
+    except AppOpen:
+        message(APP_OPEN_TEXT, 0x40)
+        return APP_OPEN
+    except Exception as e:
+        traceback.print_exc()
+        message(f'The update could not be installed.\n\n{e}\n\nDownload Lastbook from lastbook.org and run its setup. '
+                'Your library (LastbookData) and settings stay.', 0x10)
+        return FAILED
+    open_lastbook(d)
+    return OK
+
+
 def open_lastbook(d):
     env = {k: v for k, v in os.environ.items() if not k.startswith(('_PYI', '_MEI'))}
     env['PYINSTALLER_RESET_ENVIRONMENT'] = '1'    # Lastbook.exe is a PyInstaller program too: it must not take this one's settings
@@ -466,6 +499,8 @@ def main(argv):
             return FAILED
         quiet or message('Lastbook is removed.', 0x40)
         return OK
+    if '/update' in args:
+        return update()
     if quiet:
         try:
             install('/desktop' in args)

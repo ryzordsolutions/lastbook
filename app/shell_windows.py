@@ -729,6 +729,11 @@ class Shell:
         back = Drawing.Color.FromArgb(*SURFACE[light_theme()])
         form = self.form = Forms.Form()
         form.Text = TITLE
+        try:     # Restart and update (engine/update.py) closes the window the way the person would
+            from engine import update
+            update.QUIT = lambda: self.ui(self.form.Close) or os._exit(0)
+        except Exception:
+            traceback.print_exc()
         form.BackColor = back
         form.StartPosition = Forms.FormStartPosition.CenterScreen
         scale = ctypes.windll.user32.GetDpiForSystem() / 96     # the form itself says 96 until it has a handle

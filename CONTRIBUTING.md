@@ -37,7 +37,9 @@ through `engine/setup/download.py` to the hosts in `ALLOWED_HOSTS` only: setup's
 button (`engine/update.py`, `downloads.lastbook.org` only).
 
 - No telemetry, analytics, crash reporting, fonts or scripts from the web, or "phone home" of any kind. The one update check
-  (`engine/update.py`) runs only when the person presses its button, and only says whether a newer version exists.
+  (`engine/update.py`) runs only when the person presses its button, and only says whether a newer version exists. On
+  Windows, Update now then downloads the installer (`engine/update_windows.py`), again only when pressed, and runs it only
+  after its checksum and signature pass and the person presses Restart and update.
 - Our own pages (`web/`) contain no web address. The build fails if they do.
 - A new dependency must work fully offline, and must not open a socket or start a server. Say in the pull request what
   it is, its licence, and why it is needed, and add it to `THIRD_PARTY_NOTICES.md`.

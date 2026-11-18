@@ -56,7 +56,11 @@ other Linux distributions have not been validated for this release.
   The person can choose Small, Medium or All, selects a state map, and starts the checked downloads. A library already on the
   computer (a folder or a pack zip) can be used instead of downloading.
 - **Check for updates, only when asked.** About has a Check for updates button (and the Mac menu has Lastbook > Check for
-  Updates…). It only says whether a newer version is on the website; nothing is downloaded or installed.
+  Updates…). On the Mac and Linux it only says whether a newer version is on the website. On Windows, the installed app also
+  offers **Update now**: it downloads that version's installer from `downloads.lastbook.org`, checks its size, SHA-256 and
+  Authenticode signature (the same publisher as the running app), and only on **Restart and update** runs it with `/update`,
+  which waits for Lastbook to close, installs over it and opens it again. LastbookData and settings stay
+  (`engine/update_windows.py`).
 
 ## Privacy and network use
 
@@ -65,7 +69,7 @@ other Linux distributions have not been validated for this release.
   (`app/shell_windows.py`), and WebKitGTK `URISchemeRequest` on Linux (`app/shell_linux.py`). The local AI runner speaks JSON lines on standard input and output and opens no socket either.
 - **Two uses of the network, both started by the person.** (1) Setup's downloader (`engine/setup/`), when the person
   starts or resumes a download. (2) The update check (`engine/update.py`, `web/update.js`), when the person presses
-  the button. Both go through `engine/setup/download.py`, the only module that opens a connection: HTTPS on port 443 only,
+  the button, and on Windows the installer download, when the person presses Update now. Both go through `engine/setup/download.py`, the only module that opens a connection: HTTPS on port 443 only,
   to allow-listed hosts only (`downloads.lastbook.org` for packs, maps, the manifest and update information; Hugging Face's
   download hosts for the AI model; the update check accepts `downloads.lastbook.org` alone), no proxy from the system, and a
   redirect is followed only to another allowed host.
